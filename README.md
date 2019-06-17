@@ -17,7 +17,7 @@ This image contains a couple of useful tools and helpers and is meant to be used
 Include the image via the **image** keyword in your `.gitlab-ci.yml`:
 
 ```yaml
-image: ueberdosis/gitlab-ci
+image: ueberdosis/gitlab-ci-build-tools
 ```
 
 Run the init command of the included `ci` helper script in the **before_script** section:
