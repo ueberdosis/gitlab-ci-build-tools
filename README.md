@@ -37,7 +37,7 @@ before_script:
 
 ```yaml
 before_script:
-  - eval $(ci init ) 
+  - eval $(ci init) 
 ```
 
 By default the script uses the GitLab container registry of the current project. You can specify your own registry with environment variables in the `.gitlab-ci.yml`:
@@ -63,7 +63,7 @@ before_script:
 
 To use a **different compose file** for certain jobs (e.g. testing stages), just run the init command again for this job:
 
-```
+```yaml
 unit_tests:
   stage: tests
   before_script:
