@@ -90,7 +90,7 @@ unit_tests:
       CODE
 ```
 
-If you want to run **multiple instances** on the same stage, pass a name as argument to the `run` command. This will prefix the resulting container names and allows concurreny:
+If you want to run **multiple instances** in the same pipeline, pass a name as argument to the `run` command. This will prefix the resulting container names and allows concurrency:
 
 ```yaml
 unit_tests:
@@ -127,6 +127,24 @@ browser_tests:
 ```
 
 The example above will create a new folder named `screenshots` in the current working directory with the contents of `var/www/tests/Browser/screenshots` from inside the `php`  container. The copying is done after your script finished, so it can be used for artifacts storage or caching purposes.
+
+### ci down
+
+> The down command stops and deletes running containers, networks and volumes.
+
+If you use the `run` command, invoking this command manually is not required. But it comes in handy for regular cleaning jobs in case someone terminated the pipeline prematurely.
+
+**Default usage:**
+
+```yaml
+clean:
+  stage: clean
+  only:
+    - schedules
+  script:
+   - ci down unit_tests
+   - ci down browser_tests
+```
 
 ### ci ssh
 
