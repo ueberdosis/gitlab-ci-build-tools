@@ -138,10 +138,10 @@ Another common task in a pipeline is connecting to a remote host to deploy chang
 
 ```yaml
 deploy:
-	stage: deploy
-	script:
-	  - ci ssh
-	  - rsync -arz --progress src/ remote-host:/var/www/
+  stage: deploy
+  script:
+    - ci ssh
+    - rsync -arz --progress src/ remote-host:/var/www/
 ```
 
 ## Customization
