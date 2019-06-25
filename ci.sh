@@ -3,7 +3,7 @@ set -e
 
 # set default compose file and a base namespace for the compose project,
 # can be overridden
-COMPOSE_PROJECT_NAME_BASE=${COMPOSE_PROJECT_NAME:-""}
+COMPOSE_PROJECT_NAME_BASE=${COMPOSE_PROJECT_NAME:-"$CI_PROJECT_ID-$CI_PIPELINE_ID"}
 COMPOSE_FILE_BASE=${COMPOSE_FILE:-"docker-compose.build.yml"}
 
 # parse options
