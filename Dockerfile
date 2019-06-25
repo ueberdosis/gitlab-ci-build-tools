@@ -12,7 +12,7 @@ ENV KUBECTL_VERSION "1.13.3"
 ENV SONAR_SCANNER_VERSION 3.3.0.1492
 
 # install tools
-RUN apk add --no-cache bash nodejs curl jq
+RUN apk add --no-cache bash nodejs curl jq gettext
 
 # install docker-compose
 ENV COMPOSE_INTERACTIVE_NO_CLI 1
