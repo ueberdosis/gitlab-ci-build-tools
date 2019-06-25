@@ -42,3 +42,5 @@ RUN apk add --no-cache openjdk8-jre && \
 # copy ci script
 ADD ./ci.sh /usr/local/bin/ci
 RUN chmod a+x /usr/local/bin/ci
+
+ENTRYPOINT []
