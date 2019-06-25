@@ -63,9 +63,9 @@ if [ $# -gt 0 ]; then
         echo "export COMPOSE_FILE=$COMPOSE_FILE_BASE"
         echo "export COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME_BASE"
         if [ ! -z "$REGISTRY_USER" ]; then
-            docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD $REGISTRY
+            docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD $REGISTRY  &>/dev/null
         elif [ ! -z "$CI_BUILD_TOKEN" ]; then
-            docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+            docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY &>/dev/null
         fi
 
     # spins up containers and executes the code piped in from stdin.
