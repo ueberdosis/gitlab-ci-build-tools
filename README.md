@@ -11,6 +11,7 @@ This image contains a couple of useful tools and helpers and is meant to be used
 * [sonar-scanner](https://github.com/SonarSource/sonar-scanner-cli)
 * bash
 * node.js
+* curl
 
 ## Getting started
 
@@ -121,7 +122,7 @@ browser_tests:
       - screenshots
   script:
     - |
-      ci run --copy=php:/var/www/tests/Browser/screenshots << CODE
+      ci run --copy php:/var/www/tests/Browser/screenshots << CODE
         docker-compose exec -T php php artisan:dusk
       CODE
 ```
@@ -160,6 +161,32 @@ deploy:
   script:
     - ci ssh
     - rsync -arz --progress src/ remote-host:/var/www/
+```
+
+### ci clean-registry
+
+> The clean-registry command can clean up your GitLab docker registry for the current project. (For other registries, use the included deckschrubber)
+
+To use this command, the ci helper script needs API access to your GitLab instance. Add an access token with API and Registry access to your **Settings → CI/CD → Variables** as `GITLAB_ACCESS_TOKEN`. Pass the name of the image you want to delete repository tags in bulk for as an argument.
+
+**Default usage:**
+
+```yaml
+clean-registry:
+  stage: clean
+  script:
+    - ci clean-registry image-name
+```
+
+**Advanced usage:**
+
+The ci helper script accepts the same parameters as the original API method [documented here](https://docs.gitlab.com/ee/api/container_registry.html#delete-repository-tags-in-bulk).
+
+```yaml
+clean-registry:
+  stage: clean
+  script:
+    - ci clean-registry image-name --name_regex=.* --keep_n=5 --older_than=14d
 ```
 
 ## Customization

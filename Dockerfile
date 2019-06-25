@@ -11,8 +11,8 @@ ENV FORGE_VERSION "0.4.15"
 ENV KUBECTL_VERSION "1.13.3"
 ENV SONAR_SCANNER_VERSION 3.3.0.1492
 
-# install bash & node
-RUN apk add --no-cache bash nodejs
+# install tools
+RUN apk add --no-cache bash nodejs curl jq
 
 # install docker-compose
 ENV COMPOSE_INTERACTIVE_NO_CLI 1

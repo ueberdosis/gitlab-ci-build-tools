@@ -11,6 +11,21 @@ POSITIONAL=()
 while [[ $# -gt 0 ]]; do
     key="$1"
     case $key in
+        --older_than)
+        OLDER_THAN="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        --keep_n)
+        KEEP_N="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        --name_regex)
+        NAME_REGEX="$2"
+        shift # past argument
+        shift # past value
+        ;;
         -c|--copy)
         COPY="$2"
         shift # past argument
@@ -101,6 +116,34 @@ if [ $# -gt 0 ]; then
         chmod 644 id_rsa.pub
         mv id_rsa.pub $SSH_KEY_PATH/id_rsa.pub
 
+    # Clean the GitLab docker registry
+    elif [ "$1" == "clean-registry" ]; then
+        shift
+        : "${GITLAB_ACCESS_TOKEN:?is not set!}"
+
+        if [ -z "$1" ]; then
+            echo "You need to provide an image name"
+            exit 1
+        fi
+
+        REPOSITORY_ID=$(curl -s --header "PRIVATE-TOKEN: $GITLAB_ACCESS_TOKEN" \
+        "$CI_API_V4_URL/projects/$CI_PROJECT_ID/registry/repositories" | jq '.[] | select (.name=="'"$1"'") | .id')
+
+        if [ -z "$REPOSITORY_ID" ]; then
+            echo "Image not found"
+            exit 1
+        fi
+
+        RESPONSE=$(curl -s --request DELETE --data "name_regex=${NAME_REGEX:-.*}" --data "keep_n=${KEEP_N:-5}" --data  "older_than=${OLDER_THAN:-14d}" --header "PRIVATE-TOKEN: $GITLAB_ACCESS_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/registry/repositories/$REPOSITORY_ID/tags")
+
+        if [ "$RESPONSE" != "202" ]; then
+            echo "Error: $RESPONSE"
+            exit 1
+        fi
+
+        echo "Registry cleaned successfully"
+        exit 0
+
     # wait until the given service is ready
     elif [ "$1" == "wait-for" ]; then
         shift
@@ -112,6 +155,12 @@ if [ $# -gt 0 ]; then
     # get the git user of the last commit
     elif [ "$1" == "git-user" ]; then
         echo "$(git --no-pager show -s --format='%an' $(git log --format="%H" -n 1))"
-    fi
 
+    # hash the given file and truncate the checksum
+    elif [ "$1" == "hash" ]; then
+        shift
+        FILE=$1
+        shift
+        sha512sum $FILE | awk "{print $1}" | cut -c1-16
+    fi
 fi
