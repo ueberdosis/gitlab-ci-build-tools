@@ -12,7 +12,7 @@ ENV KUBECTL_VERSION "1.13.3"
 ENV SONAR_SCANNER_VERSION 3.3.0.1492
 
 # install tools
-RUN apk add --no-cache bash nodejs curl jq gettext
+RUN apk add --no-cache bash nodejs curl jq gettext ca-certificates git
 
 # install docker-compose
 ENV COMPOSE_INTERACTIVE_NO_CLI 1
@@ -38,6 +38,10 @@ RUN apk add --no-cache openjdk8-jre && \
     mv -fv /tmp/sonar-scanner-${SONAR_SCANNER_VERSION}/bin/sonar-scanner /usr/bin && \
     chmod a+x /usr/bin/sonar-scanner && \
     mv -fv /tmp/sonar-scanner-${SONAR_SCANNER_VERSION}/lib/* /usr/lib
+
+# install trivy
+COPY --from=knqyf263/trivy /usr/local/bin/trivy /usr/local/bin/trivy
+RUN chmod +x /usr/local/bin/trivy
 
 # copy ci script
 ADD ./ci.sh /usr/local/bin/ci

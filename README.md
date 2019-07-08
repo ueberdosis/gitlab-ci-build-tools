@@ -9,6 +9,7 @@ This image contains a couple of useful tools and helpers and is meant to be used
 * [forge](https://forge.sh/)
 * [kubectl](https://github.com/kubernetes/kubectl)
 * [sonar-scanner](https://github.com/SonarSource/sonar-scanner-cli)
+* [trivy](https://www.github.com/knqyf263/trivy)
 * bash
 * node.js
 * curl
