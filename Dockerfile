@@ -16,7 +16,8 @@ RUN apk add --no-cache bash nodejs curl jq gettext ca-certificates git
 
 # install docker-compose
 ENV COMPOSE_INTERACTIVE_NO_CLI 1
-RUN apk add --no-cache py-pip py-paramiko && \
+RUN apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make && \
+    pip install --upgrade pip && \
     pip install --user docker-compose && \
     mv /root/.local/bin/docker-compose /usr/local/bin/docker-compose
 
