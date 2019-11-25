@@ -147,12 +147,23 @@ if [ $# -gt 0 ]; then
     # wait until the given service is ready
     elif [ "$1" == "wait-for" ]; then
         shift
+        COUNTER=0
         CONTAINER=$(docker-compose -f docker-compose.ci.yml ps -q $1)
         STATUS="starting"
 
         while [ "$STATUS" != "healthy" ]; do
             STATUS=$(docker inspect -f {{.State.Health.Status}} $CONTAINER)
             sleep 1
+
+            if [ "$STATUS" == "exited" ]; then
+                docker start $CONTAINER
+            fi
+
+            ((COUNTER=COUNTER+1))
+            if [ $COUNTER -gt 300 ]; then
+                echo "Timeout after waiting for 5 minutes…"
+                exit 1
+            fi
         done
 
     # get the git user of the last commit
