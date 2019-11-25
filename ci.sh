@@ -153,9 +153,10 @@ if [ $# -gt 0 ]; then
 
         while [ "$STATUS" != "healthy" ]; do
             STATUS=$(docker inspect -f {{.State.Health.Status}} $CONTAINER)
+            STATE=$(docker inspect -f {{.State.Status}} $CONTAINER)
             sleep 1
 
-            if [ "$STATUS" == "exited" ]; then
+            if [ "$STATE" == "exited" ]; then
                 docker start $CONTAINER
             fi
 
