@@ -148,7 +148,7 @@ if [ $# -gt 0 ]; then
     elif [ "$1" == "wait-for" ]; then
         shift
         COUNTER=0
-        CONTAINER=$(docker-compose -f docker-compose.ci.yml ps -q $1)
+        CONTAINER=$(docker-compose ps -q $1)
         STATUS="starting"
 
         while [ "$STATUS" != "healthy" ]; do
