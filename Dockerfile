@@ -7,8 +7,6 @@ RUN apk add --no-cache git && \
 FROM docker:git
 MAINTAINER "Kris Siepert <m@kris.cool>"
 
-ENV FORGE_VERSION "0.4.15"
-ENV KUBECTL_VERSION "1.13.3"
 ENV SONAR_SCANNER_VERSION 3.3.0.1492
 
 # install tools
@@ -20,14 +18,6 @@ RUN apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev mak
     pip install --upgrade pip && \
     pip install --user docker-compose && \
     mv /root/.local/bin/docker-compose /usr/local/bin/docker-compose
-
-# install kubectl
-ADD https://storage.googleapis.com/kubernetes-release/release/v$KUBECTL_VERSION/bin/linux/amd64/kubectl /usr/local/bin/kubectl
-RUN chmod a+x /usr/local/bin/kubectl
-
-# install forge
-ADD https://s3.amazonaws.com/datawire-static-files/forge/$FORGE_VERSION/forge /usr/local/bin/forge
-RUN chmod a+x /usr/local/bin/forge
 
 # install deckschrubber
 COPY --from=golang /go/bin/deckschrubber /usr/local/bin/deckschrubber
@@ -41,7 +31,7 @@ RUN apk add --no-cache openjdk8-jre && \
     mv -fv /tmp/sonar-scanner-${SONAR_SCANNER_VERSION}/lib/* /usr/lib
 
 # install trivy
-COPY --from=knqyf263/trivy /usr/local/bin/trivy /usr/local/bin/trivy
+COPY --from=aquasec/trivy /usr/local/bin/trivy /usr/local/bin/trivy
 RUN chmod +x /usr/local/bin/trivy
 
 # copy ci script
