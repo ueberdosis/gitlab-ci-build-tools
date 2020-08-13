@@ -184,7 +184,7 @@ The ci helper script accepts the same parameters as the original API method [doc
 clean-registry:
   stage: clean
   script:
-    - ci clean-registry image-name --name_regex .* --keep_n 5 --older_than 14d
+    - ci clean-registry image-name --name_regex_delete '.*' --name_regex_keep 'master.*' --keep_n 5 --older_than 14d
 ```
 
 ## Customization
