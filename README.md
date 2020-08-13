@@ -1,5 +1,7 @@
 # Docker Image 🐳 for GitLab CI 🦊
 
+ARCHIVED in favor of https://github.com/ueberdosis/build-tools
+
 This image contains a couple of useful tools and helpers and is meant to be used within GitLab CI by the CI runner.
 
 ## Tools included
