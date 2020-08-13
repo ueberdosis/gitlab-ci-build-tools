@@ -21,8 +21,13 @@ while [[ $# -gt 0 ]]; do
         shift # past argument
         shift # past value
         ;;
-        --name_regex)
+        --name_regex_delete)
         NAME_REGEX="$2"
+        shift # past argument
+        shift # past value
+        ;;
+        --name_regex_keep)
+        NAME_REGEX_KEEP="$2"
         shift # past argument
         shift # past value
         ;;
@@ -134,7 +139,7 @@ if [ $# -gt 0 ]; then
             exit 1
         fi
 
-        RESPONSE=$(curl -s --request DELETE --data "name_regex=${NAME_REGEX:-.*}" --data "keep_n=${KEEP_N:-5}" --data  "older_than=${OLDER_THAN:-14d}" --header "PRIVATE-TOKEN: $GITLAB_ACCESS_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/registry/repositories/$REPOSITORY_ID/tags")
+        RESPONSE=$(curl -s --request DELETE --data "name_regex_delete=${NAME_REGEX:-.*}" --data "name_regex_keep=${NAME_REGEX_KEEP:-master.*}" --data "keep_n=${KEEP_N:-5}" --data  "older_than=${OLDER_THAN:-14d}" --header "PRIVATE-TOKEN: $GITLAB_ACCESS_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/registry/repositories/$REPOSITORY_ID/tags")
 
         if [ "$RESPONSE" != "202" ]; then
             echo "Error: $RESPONSE"
